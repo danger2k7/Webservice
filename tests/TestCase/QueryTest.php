@@ -21,7 +21,7 @@ class QueryTest extends TestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -105,11 +105,11 @@ class QueryTest extends TestCase
 
         $debugInfo = $this->query->__debugInfo();
 
-        $this->assertInternalType('callable', $debugInfo['formatters'][0]);
+        $this->assertIsCallable('callable', $debugInfo['formatters'][0]);
     }
 
     /**
-     * @expectedException \UnexpectedValueException
+     * @expectException \UnexpectedValueException
      */
     public function testSetInvalidAction()
     {
@@ -291,7 +291,7 @@ class QueryTest extends TestCase
     /**
      * @inheritDoc
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

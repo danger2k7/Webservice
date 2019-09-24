@@ -1,5 +1,4 @@
 <?php
-
 namespace Muffin\Webservice\Exception;
 
 use Cake\Core\Exception\Exception;

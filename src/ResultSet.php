@@ -1,5 +1,4 @@
 <?php
-
 namespace Muffin\Webservice;
 
 use Cake\Collection\CollectionTrait;
@@ -70,7 +69,7 @@ class ResultSet implements ResultSetInterface
      * @throws \Cake\Database\Exception
      * @return void
      */
-    public function rewind()
+    public function rewind(): void
     {
         $this->_index = 0;
     }
@@ -82,7 +81,7 @@ class ResultSet implements ResultSetInterface
      *
      * @return string Serialized object
      */
-    public function serialize()
+    public function serialize(): string
     {
         while ($this->valid()) {
             $this->next();
@@ -98,7 +97,7 @@ class ResultSet implements ResultSetInterface
      *
      * @return bool
      */
-    public function valid()
+    public function valid(): bool
     {
         if (!isset($this->_results[$this->key()])) {
             return false;
@@ -116,7 +115,7 @@ class ResultSet implements ResultSetInterface
      *
      * @return int
      */
-    public function key()
+    public function key(): int
     {
         return $this->_index;
     }
@@ -128,7 +127,7 @@ class ResultSet implements ResultSetInterface
      *
      * @return void
      */
-    public function next()
+    public function next(): void
     {
         $this->_index++;
     }
@@ -141,7 +140,7 @@ class ResultSet implements ResultSetInterface
      * @param string $serialized Serialized object
      * @return void
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         $this->_results = unserialize($serialized);
     }
@@ -153,7 +152,7 @@ class ResultSet implements ResultSetInterface
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         return count($this->_results);
     }
@@ -163,7 +162,7 @@ class ResultSet implements ResultSetInterface
      *
      * @return int|null
      */
-    public function total()
+    public function total(): ?int
     {
         return $this->_total;
     }

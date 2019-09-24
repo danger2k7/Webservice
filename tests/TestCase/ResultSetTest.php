@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Muffin\Webservice\Test\TestCase;
 
 use Cake\TestSuite\TestCase;
@@ -17,7 +17,7 @@ class ResultSetTest extends TestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -49,7 +49,7 @@ class ResultSetTest extends TestCase
 
     public function testSerialize()
     {
-        $this->assertInternalType('string', serialize($this->resultSet));
+        $this->assertIsString('string', serialize($this->resultSet));
     }
 
     public function testUnserialize()
@@ -62,7 +62,7 @@ class ResultSetTest extends TestCase
     /**
      * @inheritDoc
      */
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 

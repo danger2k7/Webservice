@@ -12,7 +12,7 @@ class ConnectionTest extends TestCase
      */
     public $connection;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -23,9 +23,9 @@ class ConnectionTest extends TestCase
     }
 
     /**
-     * @expectedException \Muffin\Webservice\Exception\MissingDriverException
+     * @expectException \Muffin\Webservice\Exception\MissingDriverException
      */
-    public function testConstructorMissingDriver()
+    public function testConstructorMissingDriver(): void
     {
         new Connection([
             'name' => 'test',
@@ -34,7 +34,7 @@ class ConnectionTest extends TestCase
     }
 
     /**
-     * @expectedException \Muffin\Webservice\Exception\MissingConnectionException
+     * @expectException \Muffin\Webservice\Exception\MissingConnectionException
      */
     public function testConstructorNoDriver()
     {

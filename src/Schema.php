@@ -158,7 +158,7 @@ class Schema
      * @param array|string $attrs The attributes for the column.
      * @return $this
      */
-    public function addColumn($name, $attrs)
+    public function addColumn($name, $attrs): self
     {
         if (is_string($attrs)) {
             $attrs = ['type' => $attrs];
@@ -179,7 +179,7 @@ class Schema
      *
      * @return array
      */
-    public function columns()
+    public function columns(): array
     {
         return array_keys($this->_columns);
     }
@@ -190,7 +190,7 @@ class Schema
      * @param string $name The column name.
      * @return array|null Column data or null.
      */
-    public function column($name)
+    public function column($name): ?array
     {
         if (!isset($this->_columns[$name])) {
             return null;
@@ -202,34 +202,13 @@ class Schema
     }
 
     /**
-     * Sets the type of a column, or returns its current type
-     * if none is passed.
-     *
-     * @param string $name The column to get the type of.
-     * @param string $type The type to set the column to.
-     * @return string|null Either the column type or null.
-     * @deprecated 2.0.0 Please use setColumnType or getColumnType instead.
-     */
-    public function columnType($name, $type = null)
-    {
-        if (!isset($this->_columns[$name])) {
-            return null;
-        }
-        if ($type !== null) {
-            $this->setColumnType($name, $type);
-        }
-
-        return $this->getColumnType($name);
-    }
-
-    /**
      * Set the type of a column
      *
      * @param string $name Column name
      * @param string $type Type to set for the column
      * @return $this
      */
-    public function setColumnType($name, $type)
+    public function setColumnType($name, $type): self
     {
         $this->_columns[$name]['type'] = $type;
         $this->_typeMap[$name] = $type;
@@ -243,7 +222,7 @@ class Schema
      * @param string $name Column name
      * @return null|string
      */
-    public function getColumnType($name)
+    public function getColumnType($name): ?string
     {
         if (!isset($this->_columns[$name])) {
             return null;
@@ -260,7 +239,7 @@ class Schema
      * @param string $column The column name to get the base type from
      * @return string|null The base type name
      */
-    public function baseColumnType($column)
+    public function baseColumnType($column): ?string
     {
         if (isset($this->_columns[$column]['baseType'])) {
             return $this->_columns[$column]['baseType'];
@@ -285,7 +264,7 @@ class Schema
      *
      * @return array
      */
-    public function typeMap()
+    public function typeMap(): array
     {
         return $this->_typeMap;
     }
@@ -298,7 +277,7 @@ class Schema
      * @param string $name The column to get the type of.
      * @return bool Whether or not the field is nullable.
      */
-    public function isNullable($name)
+    public function isNullable($name): bool
     {
         if (!isset($this->_columns[$name])) {
             return true;
@@ -312,7 +291,7 @@ class Schema
      *
      * @return array
      */
-    public function defaultValues()
+    public function defaultValues(): array
     {
         $defaults = [];
         foreach ($this->_columns as $name => $data) {
@@ -334,7 +313,7 @@ class Schema
      * @return array Column name(s) for the primary key. An
      *   empty list will be returned when the endpoint has no primary key.
      */
-    public function primaryKey()
+    public function primaryKey(): array
     {
         $primaryKeys = [];
         foreach ($this->_columns as $name => $data) {
@@ -349,32 +328,12 @@ class Schema
     }
 
     /**
-     * Get/set the options for a endpoint.
-     *
-     * Endpoint options allow you to set platform specific endpoint level options.
-     *
-     * @param array|null $options The options to set, or null to read options.
-     * @return $this|array Either the endpoint instance, or an array of options when reading.
-     * @deprecated 2.0.0 Please use setOptions and getOptions instead.
-     */
-    public function options($options = null)
-    {
-        if ($options === null) {
-            return $this->getOptions();
-        }
-
-        $this->setOptions($options);
-
-        return $this;
-    }
-
-    /**
      * Set the schema options for an endpoint
      *
      * @param array $options Array of options to set
      * @return $this
      */
-    public function setOptions(array $options)
+    public function setOptions(array $options): self
     {
         $this->_options = array_merge($this->_options, $options);
 
@@ -386,7 +345,7 @@ class Schema
      *
      * @return array
      */
-    public function getOptions()
+    public function getOptions(): array
     {
         return $this->_options;
     }

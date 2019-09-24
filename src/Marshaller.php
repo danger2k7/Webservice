@@ -47,7 +47,7 @@ class Marshaller
      * @return \Muffin\Webservice\Model\Resource
      * @see \Muffin\Webservice\Model\Endpoint::newEntity()
      */
-    public function one(array $data, array $options = [])
+    public function one(array $data, array $options = []): Model\Resource
     {
         list($data, $options) = $this->_prepareDataAndOptions($data, $options);
 
@@ -104,7 +104,7 @@ class Marshaller
      * @return array The list of validation errors.
      * @throws \RuntimeException If no validator can be created.
      */
-    protected function _validate($data, $options, $isNew)
+    protected function _validate($data, $options, $isNew): array
     {
         if (!$options['validate']) {
             return [];
@@ -136,7 +136,7 @@ class Marshaller
      * @param array $options The options passed to this marshaller.
      * @return array An array containing prepared data and options.
      */
-    protected function _prepareDataAndOptions($data, $options)
+    protected function _prepareDataAndOptions($data, $options): array
     {
         $options += ['validate' => true];
 
@@ -166,7 +166,7 @@ class Marshaller
      * @return array An array of hydrated records.
      * @see \Muffin\Webservice\Model\Endpoint::newEntities()
      */
-    public function many(array $data, array $options = [])
+    public function many(array $data, array $options = []): array
     {
         $output = [];
         foreach ($data as $record) {
@@ -196,7 +196,7 @@ class Marshaller
      * @param array $options List of options.
      * @return \Cake\Datasource\EntityInterface
      */
-    public function merge(EntityInterface $entity, array $data, array $options = [])
+    public function merge(EntityInterface $entity, array $data, array $options = []): EntityInterface
     {
         list($data, $options) = $this->_prepareDataAndOptions($data, $options);
 
@@ -264,7 +264,7 @@ class Marshaller
      * @param array $options List of options.
      * @return array
      */
-    public function mergeMany($entities, array $data, array $options = [])
+    public function mergeMany($entities, array $data, array $options = []): array
     {
         $primary = (array)$this->_endpoint->getPrimaryKey();
 
@@ -277,12 +277,12 @@ class Marshaller
 
                 return implode(';', $keys);
             })
-            ->map(function ($element, $key) {
+            ->map(static function ($element, $key) {
                 return $key === '' ? $element : $element[0];
             })
             ->toArray();
 
-        $new = isset($indexed[null]) ? $indexed[null] : [];
+        $new = $indexed[null] ?? [];
         unset($indexed[null]);
         $output = [];
 

@@ -19,6 +19,7 @@ use Cake\Log\Log;
 require_once 'vendor/autoload.php';
 
 // Path constants to a few helpful things.
+define('DS', DIRECTORY_SEPARATOR);
 define('ROOT', dirname(__DIR__) . DS);
 define('CAKE_CORE_INCLUDE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp');
 define('CORE_PATH', ROOT . 'vendor' . DS . 'cakephp' . DS . 'cakephp' . DS);
@@ -96,12 +97,12 @@ ConnectionManager::setConfig('test_webservice', $config);
 
 Log::setConfig([
     'debug' => [
-        'engine' => 'Cake\Log\Engine\FileLog',
+        'engine' => \Cake\Log\Engine\FileLog::class,
         'levels' => ['notice', 'info', 'debug'],
         'file' => 'debug',
     ],
     'error' => [
-        'engine' => 'Cake\Log\Engine\FileLog',
+        'engine' => \Cake\Log\Engine\FileLog::class,
         'levels' => ['warning', 'error', 'critical', 'alert', 'emergency'],
         'file' => 'error',
     ]
@@ -110,4 +111,4 @@ Log::setConfig([
 Plugin::getCollection()->add(new \Muffin\Webservice\Plugin());
 require Plugin::getCollection()->get('Muffin/Webservice')->getConfigPath() . 'bootstrap.php';
 
-loadPHPUnitAliases();
+//loadPHPUnitAliases();

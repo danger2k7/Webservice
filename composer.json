@@ -39,11 +39,13 @@
         "irc": "irc://irc.freenode.org/muffin"
     },
     "require": {
-        "cakephp/cakephp": "^3.6"
+        "cakephp/cakephp": "4.x-dev as 4.0",
+        "ext-json": "*"
     },
     "require-dev": {
-        "cakephp/cakephp-codesniffer": "^3.0",
-        "phpunit/phpunit": "^5.7.14|^6.0"
+        "roave/security-advisories": "dev-master",
+        "cakephp/cakephp-codesniffer": "4.0.0-beta4",
+        "phpunit/phpunit": "^8.0"
     },
     "autoload": {
         "psr-4": {
@@ -54,5 +56,6 @@
         "psr-4": {
             "Muffin\\Webservice\\Test\\": "tests"
         }
-    }
+    },
+    "minimum-stability": "dev"
 }

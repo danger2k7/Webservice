@@ -1,5 +1,4 @@
 <?php
-
 namespace Muffin\Webservice\Model;
 
 use Cake\Core\App;
@@ -44,7 +43,7 @@ class EndpointLocator
      * @param \Muffin\Webservice\Model\Endpoint $object The table to set.
      * @return \Muffin\Webservice\Model\Endpoint
      */
-    public function set($alias, Endpoint $object)
+    public function set($alias, Endpoint $object): Endpoint
     {
         return $this->_instances[$alias] = $object;
     }
@@ -57,7 +56,7 @@ class EndpointLocator
      * @return \Muffin\Webservice\Model\Endpoint
      * @throws \RuntimeException If the registry alias is already in use.
      */
-    public function get($alias, array $options = [])
+    public function get($alias, array $options = []): Endpoint
     {
         if (isset($this->_instances[$alias])) {
             if (!empty($options) && $this->_options[$alias] !== $options) {
@@ -112,7 +111,7 @@ class EndpointLocator
      * @param string $alias The alias to check for.
      * @return bool
      */
-    public function exists($alias)
+    public function exists($alias): bool
     {
         return isset($this->_instances[$alias]);
     }
@@ -123,13 +122,13 @@ class EndpointLocator
      * @param string|null $alias Endpoint alias
      * @return array
      */
-    public function getConfig($alias = null)
+    public function getConfig($alias = null): array
     {
         if ($alias === null) {
             return $this->_config;
         }
 
-        return isset($this->_config[$alias]) ? $this->_config[$alias] : [];
+        return $this->_config[$alias] ?? [];
     }
 
     /**
@@ -149,7 +148,7 @@ class EndpointLocator
      * @return $this
      * @throws \RuntimeException
      */
-    public function setConfig($alias, $config = null)
+    public function setConfig($alias, $config = null): self
     {
         if (!is_string($alias)) {
             $this->_config = $alias;
@@ -174,7 +173,7 @@ class EndpointLocator
      *
      * @return void
      */
-    public function clear()
+    public function clear(): void
     {
         $this->_instances = [];
         $this->_options = [];
@@ -187,7 +186,7 @@ class EndpointLocator
      * @param string $alias String alias of the endpoint
      * @return void
      */
-    public function remove($alias)
+    public function remove($alias): void
     {
         unset(
             $this->_instances[$alias],
@@ -202,7 +201,7 @@ class EndpointLocator
      * @param array $options The alias to check for.
      * @return \Muffin\Webservice\Model\Endpoint
      */
-    protected function _create(array $options)
+    protected function _create(array $options): Endpoint
     {
         return new $options['className']($options);
     }

@@ -10,14 +10,14 @@ class EndpointLocatorTest extends TestCase
      */
     private $Locator;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
         $this->Locator = new EndpointLocator();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         parent::tearDown();
 
@@ -38,8 +38,8 @@ class EndpointLocatorTest extends TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage You cannot configure "Test", it has already been constructed.
+     * @expectException \RuntimeException
+     * @expectExceptionMessage You cannot configure "Test", it has already been constructed.
      */
     public function testSetConfigForExistingObject()
     {
@@ -69,7 +69,7 @@ class EndpointLocatorTest extends TestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|\Muffin\Webservice\Model\Endpoint $first */
         $first = $this->getMockBuilder(Endpoint::class)
             ->setConstructorArgs([['alias' => 'First']])
-            ->setMethods(['getAlias'])
+            ->onlyMethods(['getAlias'])
             ->getMock();
         $first->expects($this->any())
             ->method('getAlias')
@@ -78,7 +78,7 @@ class EndpointLocatorTest extends TestCase
         /** @var \PHPUnit\Framework\MockObject\MockObject|\Muffin\Webservice\Model\Endpoint $first */
         $second = $this->getMockBuilder(Endpoint::class)
             ->setConstructorArgs([['alias' => 'Second']])
-            ->setMethods(['getAlias'])
+            ->onlyMethods(['getAlias'])
             ->getMock();
         $second->expects($this->any())
             ->method('getAlias')
@@ -114,8 +114,8 @@ class EndpointLocatorTest extends TestCase
     }
 
     /**
-     * @expectedException \RuntimeException
-     * @expectedExceptionMessage You cannot configure "First", it already exists in the locator.
+     * @expectException \RuntimeException
+     * @expectExceptionMessage You cannot configure "First", it already exists in the locator.
      */
     public function testGetWithExistingObject()
     {
@@ -147,15 +147,15 @@ class EndpointLocatorTest extends TestCase
         ]);
 
         $this->assertInstanceOf(Endpoint::class, $result);
-        $this->assertEquals('unfindable_class', $result->getName());
+        $this->assertEquals('unfindable-class', $result->getName());
     }
 
-    public function testClear()
+    public function testClear(): void
     {
         /** @var \Muffin\Webservice\Model\Endpoint $first */
         $first = $this->getMockBuilder(Endpoint::class)
             ->setConstructorArgs([['alias' => 'First']])
-            ->setMethods(['getAlias'])
+            ->onlyMethods(['getAlias'])
             ->getMock();
         $first->expects($this->any())
             ->method('getAlias')

@@ -17,10 +17,10 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
 
     use QueryTrait;
 
-    const ACTION_CREATE = 1;
-    const ACTION_READ = 2;
-    const ACTION_UPDATE = 3;
-    const ACTION_DELETE = 4;
+    public const ACTION_CREATE = 1;
+    public const ACTION_READ = 2;
+    public const ACTION_UPDATE = 3;
+    public const ACTION_DELETE = 4;
 
     /**
      * Indicates that the operation should append to the list
@@ -102,7 +102,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return $this
      */
-    public function create()
+    public function create(): self
     {
         $this->action(self::ACTION_CREATE);
 
@@ -114,7 +114,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return $this
      */
-    public function read()
+    public function read(): self
     {
         $this->action(self::ACTION_READ);
 
@@ -126,7 +126,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return $this
      */
-    public function update()
+    public function update(): self
     {
         $this->action(self::ACTION_UPDATE);
 
@@ -138,7 +138,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return $this
      */
-    public function delete()
+    public function delete(): self
     {
         $this->action(self::ACTION_DELETE);
 
@@ -158,18 +158,14 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      */
     public function clause($name)
     {
-        if (isset($this->_parts[$name])) {
-            return $this->_parts[$name];
-        }
-
-        return null;
+        return $this->_parts[$name] ?? null;
     }
 
     /**
      * Set the endpoint to be used
      *
      * @param \Muffin\Webservice\Model\Endpoint|null $endpoint The endpoint to use
-     * @return \Muffin\Webservice\Model\Endpoint|$this
+     * @return \Cake\Datasource\RepositoryInterface|Endpoint|Query
      */
     public function endpoint(Endpoint $endpoint = null)
     {
@@ -242,10 +238,10 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      * Alias a field with the endpoint's current alias.
      *
      * @param string $field The field to alias.
-     * @param null $alias Not being used
+     * @param null|string $alias Not being used
      * @return array The field prefixed with the endpoint alias.
      */
-    public function aliasField($field, $alias = null)
+    public function aliasField(string $field, ?string $alias = null): array
     {
         return [$field => $field];
     }
@@ -316,7 +312,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *  the current limit clause will be used.
      * @return $this
      */
-    public function page($page = null, $limit = null)
+    public function page($page = null, ?int $limit = null): self
     {
         if ($page === null) {
             return $this->clause('page');
@@ -345,7 +341,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      * @param int $limit number of records to be returned
      * @return $this
      */
-    public function limit($limit = null)
+    public function limit($limit = null): self
     {
         if ($limit === null) {
             return $this->clause('limit');
@@ -368,7 +364,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
             return $this->clause('set');
         }
 
-        if (!in_array($this->action(), [self::ACTION_CREATE, self::ACTION_UPDATE])) {
+        if (!in_array($this->action(), [self::ACTION_CREATE, self::ACTION_UPDATE], true)) {
             throw new \UnexpectedValueException(__('The action of this query needs to be either create update'));
         }
 
@@ -404,7 +400,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      * @param bool $overwrite whether to reset order with field list or not
      * @return $this
      */
-    public function order($fields, $overwrite = false)
+    public function order($fields, $overwrite = false): self
     {
         $this->_parts['order'] = (!$overwrite) ? Hash::merge($this->clause('order'), $fields) : $fields;
 
@@ -418,7 +414,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      * @param array $options the options to be applied
      * @return $this This object
      */
-    public function applyOptions(array $options)
+    public function applyOptions(array $options): self
     {
         if (isset($options['page'])) {
             $this->page($options['page']);
@@ -451,7 +447,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return int
      */
-    public function count()
+    public function count(): int
     {
         if ($this->action() !== self::ACTION_READ) {
             return 0;
@@ -496,7 +492,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return void
      */
-    public function triggerBeforeFind()
+    public function triggerBeforeFind(): void
     {
         if (!$this->_beforeFindFired && $this->action() === self::ACTION_READ) {
             $endpoint = $this->getRepository();
@@ -514,7 +510,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return \Traversable
      */
-    public function execute()
+    public function execute(): \Traversable
     {
         return $this->_execute();
     }
@@ -524,7 +520,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return \Traversable
      */
-    protected function _execute()
+    protected function _execute(): \Traversable
     {
         $this->triggerBeforeFind();
         if ($this->__resultSet) {
@@ -566,7 +562,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      *
      * @return \Cake\Datasource\ResultSetInterface The data to convert to JSON.
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): \Cake\Datasource\ResultSetInterface
     {
         return $this->all();
     }
@@ -579,7 +575,7 @@ class Query implements IteratorAggregate, JsonSerializable, QueryInterface
      * @return $this
      * @see \Cake\Database\Query::select
      */
-    public function select($fields = [], $overwrite = false)
+    public function select($fields = [], $overwrite = false): self
     {
         if (!is_string($fields) && is_callable($fields)) {
             $fields = $fields($this);

@@ -49,7 +49,7 @@ class Connection
      * @throws \Muffin\Webservice\Exception\MissingConnectionException If the connection does not exist.
      * @throws \Muffin\Webservice\Exception\MissingDriverException If the driver does not exist.
      */
-    protected function _normalizeConfig($config)
+    protected function _normalizeConfig($config): array
     {
         if (empty($config['driver'])) {
             if (empty($config['service'])) {

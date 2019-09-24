@@ -34,7 +34,7 @@ class Schema extends \Muffin\Webservice\Schema
      *
      * @return void
      */
-    public function initialize()
+    public function initialize(): void
     {
     }
 }

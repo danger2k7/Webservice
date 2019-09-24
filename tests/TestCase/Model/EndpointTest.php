@@ -13,6 +13,7 @@ use Muffin\Webservice\Test\test_app\Model\Endpoint\ExampleEndpoint;
 use Muffin\Webservice\Test\test_app\Model\Endpoint\TestEndpoint;
 use Muffin\Webservice\Test\test_app\Webservice\TestWebservice;
 use Muffin\Webservice\Webservice\WebserviceInterface;
+use PHPUnit\Framework\MockObject\MockBuilder;
 use SomeVendor\SomePlugin\Model\Endpoint\PluginEndpoint;
 
 class EndpointTest extends TestCase
@@ -30,7 +31,7 @@ class EndpointTest extends TestCase
     /**
      * @inheritDoc
      */
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -45,10 +46,10 @@ class EndpointTest extends TestCase
         ]);
     }
 
-    public function providerEndpointNames()
+    public function providerEndpointNames(): array
     {
         return [
-            'No inflector' => ['user-groups', null, 'user_groups'],
+            'No inflector' => ['user-groups', null, 'user-groups'],
             'Dasherize' => ['user-groups', 'dasherize', 'user-groups'],
             'Variable' => ['user-groups', 'variable', 'userGroups'],
         ];
@@ -124,7 +125,7 @@ class EndpointTest extends TestCase
     }
 
     /**
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
+     * @expectException \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testGetNonExisting()
     {
@@ -176,7 +177,7 @@ class EndpointTest extends TestCase
     }
 
     /**
-     * @expectedException \Cake\Datasource\Exception\RecordNotFoundException
+     * @expectException \Cake\Datasource\Exception\RecordNotFoundException
      */
     public function testDelete()
     {
@@ -270,7 +271,7 @@ class EndpointTest extends TestCase
     public function testInflectionMethod()
     {
         $endpoint = new Endpoint(['endpoint' => 'users']);
-        $this->assertSame('underscore', $endpoint->getInflectionMethod());
+        $this->assertSame('dasherize', $endpoint->getInflectionMethod());
         $endpoint->setInflectionMethod('dasherize');
         $this->assertSame('dasherize', $endpoint->getInflectionMethod());
     }
@@ -418,7 +419,7 @@ class EndpointTest extends TestCase
     }
 
     /**
-     * @expectedException \Muffin\Webservice\Exception\MissingResourceClassException
+     * @expectException \Muffin\Webservice\Exception\MissingResourceClassException
      */
     public function testSetResourceMissingClass()
     {
@@ -436,17 +437,17 @@ class EndpointTest extends TestCase
     /**
      * Fake an incorrect return of the schema to check the exception
      *
-     * @expectedException \Muffin\Webservice\Exception\UnexpectedDriverException
+     * @expectException \Muffin\Webservice\Exception\UnexpectedDriverException
      */
     public function testGetPrimaryKeyException()
     {
         $endpoint = $this->getMockBuilder(Endpoint::class)
-            ->setMethods(['getSchema'])
+            ->onlyMethods(['getSchema'])
             ->getMock();
 
         $endpoint->expects($this->once())
             ->method('getSchema')
-            ->willReturn(false);
+            ->willReturn(new \Muffin\Webservice\Schema($endpoint));
 
         $endpoint->getPrimaryKey();
     }
@@ -461,17 +462,17 @@ class EndpointTest extends TestCase
     }
 
     /**
-     * @expectedException \Muffin\Webservice\Exception\UnexpectedDriverException
+     * @expectException \Muffin\Webservice\Exception\UnexpectedDriverException
      */
     public function testSetWebserviceException()
     {
         $endpoint = $this->getMockBuilder(Endpoint::class)
-            ->setMethods(['getConnection'])
+            ->onlyMethods(['getConnection'])
             ->getMock();
 
         $endpoint->expects($this->once())
             ->method('getConnection')
-            ->willReturn(false);
+            ->willReturn(new \Muffin\Webservice\Connection());
 
         $testWebservice = new TestWebservice();
         $endpoint->setWebservice('test', $testWebservice);
@@ -484,7 +485,7 @@ class EndpointTest extends TestCase
     }
 
     /**
-     * @expectedException \BadMethodCallException
+     * @expectException \BadMethodCallException
      */
     public function testCallMissingFinder()
     {

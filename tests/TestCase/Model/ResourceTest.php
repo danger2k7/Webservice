@@ -1,5 +1,5 @@
 <?php
-
+declare(strict_types=1);
 namespace Muffin\Webservice\Test\TestCase;
 
 use Cake\TestSuite\TestCase;
@@ -21,7 +21,7 @@ class ResourceTest extends TestCase
         $endpoint = new Endpoint();
 
         $resource = new Resource([], [
-            'source' => $endpoint
+            'source' => $endpoint->getAlias()
         ]);
         $this->assertEquals($endpoint, $resource->getSource());
     }
